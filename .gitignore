@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/go,jetbrains+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=go,jetbrains+all
 
+### Bot ###
+config.yaml
+
 ### Go ###
 # Binaries for programs and plugins
 *.exe
