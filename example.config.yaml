@@ -1,0 +1,6 @@
+bot:
+  prefix: "!"
+  token: "your_discord_bot_tokem"
+log:
+  level: "debug"
+  dir: ""
