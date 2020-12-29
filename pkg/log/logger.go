@@ -54,7 +54,7 @@ func New(w io.Writer, level, dir string) Logger {
 	lr.SetFormatter(getFormatter(false))
 
 	if dir != "" {
-		fileHook, err := NewLogrusFileHook(dir+"/go-rest-api-boilerplate.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+		fileHook, err := NewLogrusFileHook(dir+"/bot.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 		if err == nil {
 			lr.Hooks.Add(fileHook)
 		} else {
