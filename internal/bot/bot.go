@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"github.com/tech-club/dc-bot/internal/config"
 	"github.com/tech-club/dc-bot/pkg/log"
 	"os"
 	"os/signal"
@@ -12,25 +13,28 @@ import (
 type Bot struct {
 	Session *discordgo.Session
 	Log     log.Logger
-	Config  *Config
+	Config  *config.Config
 }
 
 func New() (*Bot, error) {
 	var err error
 	var bot Bot
 
-	bot.Config = LoadConfig()
+	bot.Config = config.LoadConfig()
 	bot.Log = log.New(os.Stderr, bot.Config.Log.Level, bot.Config.Log.Dir)
 	bot.Session, err = discordgo.New("Bot " + bot.Config.Bot.Token)
 	if err != nil {
 		return nil, err
 	}
 
+	bot.Session.Identify.Intents = discordgo.MakeIntent(
+		discordgo.IntentsGuildMembers | discordgo.IntentsGuildMessages)
+
 	return &bot, nil
 }
 
 func (b *Bot) Run() {
-	registerEvents(b.Session, b.Log)
+	registerEvents(b.Session, b.Log, b.Config)
 	err := b.Session.Open()
 	if err != nil {
 		panic(err)
