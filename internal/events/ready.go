@@ -15,5 +15,5 @@ func NewReadyHandler(log log.Logger) *ReadyHandler {
 
 func (h *ReadyHandler) Handler(_ *discordgo.Session, e *discordgo.Ready) {
 	h.log.Println("bot session is ready")
-	h.log.Printf("bot is logged in as '%s'\n", e.User.String())
+	h.log.Printf("bot is logged in as '%s'", e.User.String())
 }
