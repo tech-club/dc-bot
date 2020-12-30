@@ -1,17 +1,19 @@
 package events
 
 import (
-	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/tech-club/dc-bot/pkg/log"
 )
 
-type ReadyHandler struct{}
+type ReadyHandler struct {
+	log log.Logger
+}
 
-func NewReadyHandler() *ReadyHandler {
-	return &ReadyHandler{}
+func NewReadyHandler(log log.Logger) *ReadyHandler {
+	return &ReadyHandler{log: log.WithPrefix("ready")}
 }
 
 func (h *ReadyHandler) Handler(_ *discordgo.Session, e *discordgo.Ready) {
-	fmt.Println("Bot session is ready")
-	fmt.Printf("Logged in as %s\n", e.User.String())
+	h.log.Println("Bot session is ready")
+	h.log.Printf("Bot is logged in as %s\n", e.User.String())
 }
