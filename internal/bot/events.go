@@ -7,5 +7,5 @@ import (
 )
 
 func registerEvents(s *discordgo.Session, log log.Logger) {
-	s.AddHandler(events.NewReadyHandler(log))
+	s.AddHandler(events.NewReadyHandler(log).Handler)
 }
