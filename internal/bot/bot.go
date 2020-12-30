@@ -3,6 +3,8 @@ package bot
 import (
 	"github.com/tech-club/dc-bot/pkg/log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -25,4 +27,22 @@ func New() (*Bot, error) {
 	}
 
 	return &bot, nil
+}
+
+func (b *Bot) Run() {
+	registerEvents(b.Session, b.Log)
+	err := b.Session.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	<-sc
+
+	b.Log.Println("closing bot session")
+	err = b.Session.Close()
+	if err != nil {
+		panic(err)
+	}
 }
