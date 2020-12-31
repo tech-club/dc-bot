@@ -35,6 +35,8 @@ func New() (*Bot, error) {
 
 func (b *Bot) Run() {
 	registerEvents(b.Session, b.Log, b.Config)
+	registerCommands(b.Session, b.Log, b.Config)
+
 	err := b.Session.Open()
 	if err != nil {
 		panic(err)
