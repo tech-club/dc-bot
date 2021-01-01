@@ -39,7 +39,7 @@ func (c *CommandHandler) MessageHandler(s *discordgo.Session, e *discordgo.Messa
 		return
 	}
 
-	parts := strings.Split(e.Content[len(c.prefix):], "")
+	parts := strings.Split(e.Content[len(c.prefix):], " ")
 	if len(parts) < 1 {
 		return
 	}
