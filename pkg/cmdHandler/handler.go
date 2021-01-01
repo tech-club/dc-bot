@@ -55,7 +55,7 @@ func (c *CommandHandler) MessageHandler(s *discordgo.Session, e *discordgo.Messa
 	ctx := &Context{
 		Session: s,
 		Message: e.Message,
-		args:    args,
+		Args:    args,
 		Handler: c,
 	}
 
