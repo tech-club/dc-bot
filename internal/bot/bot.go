@@ -44,6 +44,7 @@ func New() (*Bot, error) {
 func (b *Bot) Run() {
 	b.registerEvents()
 	b.registerCommands()
+	b.registerMiddlewares()
 
 	err := b.Session.Open()
 	if err != nil {
