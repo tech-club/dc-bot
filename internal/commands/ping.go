@@ -15,6 +15,10 @@ func NewPingCommand(log log.Logger) *PingCommand {
 	}
 }
 
+func (c *PingCommand) Name() string {
+	return "ping"
+}
+
 func (c *PingCommand) Invokes() []string {
 	return []string{"ping", "p"}
 }

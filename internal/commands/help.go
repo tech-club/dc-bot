@@ -18,6 +18,10 @@ func NewHelpCommand(log log.Logger) *HelpCommand {
 	}
 }
 
+func (c HelpCommand) Name() string {
+	return "help"
+}
+
 func (c HelpCommand) Invokes() []string {
 	return []string{"help", "h"}
 }
