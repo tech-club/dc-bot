@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/tech-club/dc-bot/internal/config"
 	"github.com/tech-club/dc-bot/pkg/cmdHandler"
+	"github.com/tech-club/dc-bot/pkg/db"
 	"github.com/tech-club/dc-bot/pkg/log"
 	"os"
 	"os/signal"
@@ -14,6 +15,7 @@ import (
 
 type Bot struct {
 	Session    *discordgo.Session
+	Database   *db.Connection
 	Log        log.Logger
 	Config     *config.Config
 	CmdHandler *cmdHandler.CommandHandler
@@ -38,6 +40,11 @@ func New() (*Bot, error) {
 		fmt.Println("err while exec command: ", err)
 	}
 
+	bot.Database, err = db.New(bot.Config.Db.Driver, bot.Config.Db.GetDSN(), bot.Log.WithPrefix("database"))
+	if err != nil {
+		panic(err)
+	}
+
 	return &bot, nil
 }
 
@@ -56,6 +63,10 @@ func (b *Bot) Run() {
 	<-sc
 
 	b.Log.Println("closing bot session")
+	err = b.Database.Close()
+	if err != nil {
+		panic(err)
+	}
 	err = b.Session.Close()
 	if err != nil {
 		panic(err)
