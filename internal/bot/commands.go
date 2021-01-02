@@ -16,6 +16,7 @@ func registerCommands(s *discordgo.Session, log log.Logger, config *config.Confi
 	}
 
 	commandHandler.RegisterCommand(commands.NewPingCommand(log.WithPrefix("cmd_ping")))
+	commandHandler.RegisterCommand(commands.NewHelpCommand(log.WithPrefix("cmd_help")))
 
 	s.AddHandler(commandHandler.MessageHandler)
 }
