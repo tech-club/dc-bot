@@ -10,7 +10,7 @@ type ReadyHandler struct {
 }
 
 func NewReadyHandler(log log.Logger) *ReadyHandler {
-	return &ReadyHandler{log: log.WithPrefix("ready")}
+	return &ReadyHandler{log: log}
 }
 
 func (h *ReadyHandler) Handler(_ *discordgo.Session, e *discordgo.Ready) {

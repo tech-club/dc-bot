@@ -13,7 +13,7 @@ type GuildJoinHandler struct {
 
 func NewGuildJoinHandler(log log.Logger, config *config.Config) *GuildJoinHandler {
 	return &GuildJoinHandler{
-		log:    log.WithPrefix("guild_join"),
+		log:    log,
 		config: config,
 	}
 }

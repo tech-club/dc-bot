@@ -1,7 +1,9 @@
 package bot
 
 import (
+	"fmt"
 	"github.com/tech-club/dc-bot/internal/config"
+	"github.com/tech-club/dc-bot/pkg/cmdHandler"
 	"github.com/tech-club/dc-bot/pkg/log"
 	"os"
 	"os/signal"
@@ -11,9 +13,10 @@ import (
 )
 
 type Bot struct {
-	Session *discordgo.Session
-	Log     log.Logger
-	Config  *config.Config
+	Session    *discordgo.Session
+	Log        log.Logger
+	Config     *config.Config
+	CmdHandler *cmdHandler.CommandHandler
 }
 
 func New() (*Bot, error) {
@@ -30,12 +33,17 @@ func New() (*Bot, error) {
 	bot.Session.Identify.Intents = discordgo.MakeIntent(
 		discordgo.IntentsGuildMembers | discordgo.IntentsGuildMessages)
 
+	bot.CmdHandler = cmdHandler.NewCommandHandler(bot.Config.Bot.Prefix)
+	bot.CmdHandler.OnError = func(err error, ctx *cmdHandler.Context) {
+		fmt.Println("err while exec command: ", err)
+	}
+
 	return &bot, nil
 }
 
 func (b *Bot) Run() {
-	registerEvents(b.Session, b.Log, b.Config)
-	registerCommands(b.Session, b.Log, b.Config)
+	b.registerEvents()
+	b.registerCommands()
 
 	err := b.Session.Open()
 	if err != nil {
