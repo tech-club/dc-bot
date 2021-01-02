@@ -6,8 +6,8 @@ import (
 )
 
 type CommandHandler struct {
-	prefix       string
-	cmdInstances []Command
+	Prefix       string
+	CmdInstances []Command
 	cmdMap       map[string]Command
 	middlewares  []Middleware
 	OnError      func(err error, ctx *Context)
@@ -15,8 +15,8 @@ type CommandHandler struct {
 
 func NewCommandHandler(prefix string) *CommandHandler {
 	return &CommandHandler{
-		prefix:       prefix,
-		cmdInstances: make([]Command, 0),
+		Prefix:       prefix,
+		CmdInstances: make([]Command, 0),
 		cmdMap:       make(map[string]Command),
 		middlewares:  make([]Middleware, 0),
 		OnError:      func(error, *Context) {},
@@ -24,7 +24,7 @@ func NewCommandHandler(prefix string) *CommandHandler {
 }
 
 func (c *CommandHandler) RegisterCommand(cmd Command) {
-	c.cmdInstances = append(c.cmdInstances, cmd)
+	c.CmdInstances = append(c.CmdInstances, cmd)
 	for _, invoke := range cmd.Invokes() {
 		c.cmdMap[invoke] = cmd
 	}
@@ -35,11 +35,11 @@ func (c *CommandHandler) RegisterMiddleware(mw Middleware) {
 }
 
 func (c *CommandHandler) MessageHandler(s *discordgo.Session, e *discordgo.MessageCreate) {
-	if e.Author.Bot || e.Author.ID == s.State.User.ID || !strings.HasPrefix(e.Content, c.prefix) {
+	if e.Author.Bot || e.Author.ID == s.State.User.ID || !strings.HasPrefix(e.Content, c.Prefix) {
 		return
 	}
 
-	parts := strings.Split(e.Content[len(c.prefix):], " ")
+	parts := strings.Split(e.Content[len(c.Prefix):], " ")
 	if len(parts) < 1 {
 		return
 	}
