@@ -10,6 +10,6 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.0
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
-	gorm.io/driver/mysql v1.0.3 // indirect
-	gorm.io/gorm v1.20.9 // indirect
+	gorm.io/driver/mysql v1.0.3
+	gorm.io/gorm v1.20.9
 )
