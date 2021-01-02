@@ -40,25 +40,37 @@ func (c HelpCommand) Exec(ctx *cmdHandler.Context) error {
 	fields := make([]*discordgo.MessageEmbedField, 0)
 
 	for _, cmd := range ctx.Handler.CmdInstances {
-		var name string
-
-		for _, cmdName := range cmd.Invokes() {
-			name += fmt.Sprintf("`%s`, ", cmdName)
+		nameField := &discordgo.MessageEmbedField{
+			Name:   "Name",
+			Value:  fmt.Sprintf("**%s**", cmd.Name()),
+			Inline: true,
 		}
 
-		name = strings.TrimSuffix(name, ", ")
+		var invokes string
+		for _, invoke := range cmd.Invokes() {
+			invokes += fmt.Sprintf("`%s%s`, ", ctx.Handler.Prefix, invoke)
+		}
 
-		field := &discordgo.MessageEmbedField{
-			Name:   name,
+		invokes = strings.TrimSuffix(invokes, ", ")
+
+		invokesField := &discordgo.MessageEmbedField{
+			Name:   "Usage",
+			Value:  invokes,
+			Inline: true,
+		}
+
+		descriptionField := &discordgo.MessageEmbedField{
+			Name:   "Description",
 			Value:  cmd.Description(),
-			Inline: false,
+			Inline: true,
 		}
-		fields = append(fields, field)
+
+		fields = append(fields, nameField, invokesField, descriptionField)
 	}
 
 	helpMessage := &discordgo.MessageEmbed{
 		Title:       "Help",
-		Description: fmt.Sprintf("help for all commands\nPrefix: `%s`", ctx.Handler.Prefix),
+		Description: "help for all commands",
 		Fields:      fields,
 	}
 
